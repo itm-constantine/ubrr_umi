@@ -23,7 +23,8 @@ class ubrirPayment extends payment {
 		$answerUrl = 'http://'.$cmsController->getCurrentDomain()->getHost() . "/emarket/gateway/".$this->order->getId().'/';
 		$failUrl = 	'http://'.$cmsController->getCurrentDomain()->getHost() .	'/emarket/purchase/result/fail/';		 
 		$successUrl = 	'http://'.$cmsController->getCurrentDomain()->getHost() .	'/emarket/purchase/result/successful/';		
-						 
+					if(is_array($mnt_ubrir_id)) $mnt_ubrir_id = $mnt_ubrir_id[0];
+					if(is_array($mnt_secret_key)) $mnt_secret_key = $mnt_secret_key[0];	 
 		$bankHandler = new Ubrir(array(				        // инициализируем объект операции в TWPG
 							'shopId' => $mnt_ubrir_id, 
 							'order_id' => $orderId, 
@@ -34,10 +35,15 @@ class ubrirPayment extends payment {
 							'decline_url' => $failUrl,
 							));                    
 		$response_order = $bankHandler->prepare_to_pay();
-        		
+        
 		$new_order_twpg = l_mysql_query('INSERT INTO `umi_twpg` (`umi_id`, `twpg_id`, `session_id`) VALUES ("'.$orderId.'", "'.$response_order->OrderID[0].'", "'.$response_order->SessionID[0].'")');
 		
         $param = array();
+    		if(is_array($mnt_uni_id)) $mnt_uni_id = $mnt_uni_id[0];
+    		//if(is_array($mnt_uni_login)) 
+    		$mnt_uni_login = 'maevs@ubrr.ru';
+    		if(is_array($mnt_uni_pass)) $mnt_uni_pass = $mnt_uni_pass[0];
+    		//var_dump($mnt_uni_login); die;
 		$param['sign'] = strtoupper(md5(md5($mnt_uni_id).'&'.md5($mnt_uni_login).'&'.md5($mnt_uni_pass).'&'.md5($orderId).'&'.md5($amount)));
         $param['twpg_url'] = $response_order->URL[0].'?orderid='.$response_order->OrderID[0].'&sessionid='.$response_order->SessionID[0];
         $param['uni_id'] = $mnt_uni_id;
@@ -69,10 +75,15 @@ class ubrirPayment extends payment {
 			$new_order_twpg = l_mysql_query('SELECT * FROM `umi_twpg` WHERE umi_id = '.$this->order->getId().' ORDER BY id DESC LIMIT 1');
 			$orderyeah = @mysql_fetch_assoc($new_order_twpg);
 			
+			$mnt_ubrir_id = $this->object->mnt_ubrir_id;
+			$mnt_secret_key = $this->object->mnt_secret_key;
+			if(is_array($mnt_ubrir_id)) $mnt_ubrir_id = $mnt_ubrir_id[0];
+			if(is_array($mnt_secret_key)) $mnt_secret_key = $mnt_secret_key[0];	 
+					
 			$bankHandler = new Ubrir(array(																											 // инициализируем объект операции в TWPG
-								'shopId' => $this->object->mnt_ubrir_id, 
+								'shopId' => $mnt_ubrir_id, 
 								'order_id' => $this->order->getId(), 
-								'sert' => $this->object->mnt_secret_key,
+								'sert' => $mnt_secret_key,
 								'twpg_order_id' => $orderyeah['twpg_id'], 
 								'twpg_session_id' => $orderyeah['session_id']
 								));

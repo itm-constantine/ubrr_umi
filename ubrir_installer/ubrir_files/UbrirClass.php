@@ -276,7 +276,6 @@ class Ubrir
 	protected function xml_extract_result($xml_string) 
 	{
 			$parse_it = simplexml_load_string($xml_string);
-			 
 			$response_status = $parse_it->Response->Status[0];
 			switch ($response_status) {
 				case '00': {

@@ -90,7 +90,7 @@ INSERT INTO `cms3_object_fields` VALUES(NULL, 'mnt_uni_emp', 'Пароль ли�
 SET @field = LAST_INSERT_ID( ) ;
 INSERT INTO `cms3_fields_controller` VALUES (40, @field, @field_group);
 
-INSERT INTO `cms3_object_fields` VALUES(NULL, 'mnt_two', 'Два процессинга', 1, 1, 0, 1, NULL, 0, 0, '', 0, NULL, 0, 0, 1);
+INSERT INTO `cms3_object_fields` VALUES(NULL, 'mnt_two', 'Два процессинга', 1, 4, 0, 1, NULL, 0, 0, '', 0, NULL, 0, 0, 1);
 SET @field = LAST_INSERT_ID( ) ;
 INSERT INTO `cms3_fields_controller` VALUES (45, @field, @field_group);
 

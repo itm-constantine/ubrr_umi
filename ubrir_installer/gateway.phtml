@@ -1,0 +1,8 @@
+﻿<?php
+
+if(!empty($_POST['xmlmsg'])) $xmlmsg = $_POST['xmlmsg'];
+$xml_string = base64_decode($xmlmsg);
+$parse_it = simplexml_load_string($xml_string);
+$cmsController = cmsController::getInstance();
+echo '<script>window.location.href = "http://'.$cmsController->getCurrentDomain()->getHost() .'/emarket/purchase/result/successful/"</script>';
+?>
