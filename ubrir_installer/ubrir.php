@@ -41,7 +41,6 @@ class ubrirPayment extends payment {
         $param = array();
     		if(is_array($mnt_uni_id)) $mnt_uni_id = $mnt_uni_id[0];
     		//if(is_array($mnt_uni_login)) 
-    		$mnt_uni_login = 'maevs@ubrr.ru';
     		if(is_array($mnt_uni_pass)) $mnt_uni_pass = $mnt_uni_pass[0];
     		//var_dump($mnt_uni_login); die;
 		$param['sign'] = strtoupper(md5(md5($mnt_uni_id).'&'.md5($mnt_uni_login).'&'.md5($mnt_uni_pass).'&'.md5($orderId).'&'.md5($amount)));
